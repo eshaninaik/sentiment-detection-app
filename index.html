@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h2 class="mt-5">Sentiment Analysis on Social Media Data</h2>
+    <div class="mt-4">
+        <form id="sentiment-form">
+            <div class="form-group">
+                <label for="text">Enter text:</label>
+                <input type="text" class="form-control" id="text" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Analyze</button>
+        </form>
+    </div>
+    <div class="mt-4" id="result" style="display: none;">
+        <h4>Sentiment:</h4>
+        <p id="sentiment"></p>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script>
+    $('#sentiment-form').on('submit', function(event) {
+        event.preventDefault();
+        var text = $('#text').val();
+        $.ajax({
+            url: '/predict',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ text: text }),
+            success: function(response) {
+                $('#result').show();
+                $('#sentiment').text(response.sentiment);
+            }
+        });
+    });
+</script>
+</body>
+</html>
